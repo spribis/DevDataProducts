@@ -18,17 +18,23 @@ Slide With Code
 
 
 ```r
-summary(cars)
-```
-
-```
-     speed           dist       
- Min.   : 4.0   Min.   :  2.00  
- 1st Qu.:12.0   1st Qu.: 26.00  
- Median :15.0   Median : 36.00  
- Mean   :15.4   Mean   : 42.98  
- 3rd Qu.:19.0   3rd Qu.: 56.00  
- Max.   :25.0   Max.   :120.00  
+titanic3 <- read.csv("titanic3.csv")
+titanic3 <- titanic3[-1310,]
+titanic3$ticket <- as.character(titanic3$ticket)
+titanic3$tick <- paste0(titanic3$ticket, "Unique")
+for (i in 1:length(titanic3$tick)) {
+        titanic3$num[i] <- length(grep(titanic3$tick[i], titanic3$tick))
+}
+titanic3$fareper <- titanic3$fare/titanic3$num
+titanic3 <- titanic3[is.na(titanic3$age)==F,]
+titanic3 <- titanic3[is.na(titanic3$fare)==F,]
+titanic3 <- titanic3[is.na(titanic3$fare)==0,]
+library(caret)
+library(randomForest)
+titanic3$surv <- as.factor(titanic3$survived)
+set.seed(17)
+modFit2 <- train(surv ~ sex + age + fareper, method = "rf", data = titanic3)
+save(modFit2, file="modFit2.rf")
 ```
 
 Slide With Plot
